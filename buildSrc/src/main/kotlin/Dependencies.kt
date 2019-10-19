@@ -19,6 +19,13 @@ object AndroidX {
 
     const val appCompat = "androidx.appcompat:appcompat:${Versions.jetpack}"
     const val core = "androidx.core:core-ktx:${Versions.ktx}"
+
+}
+
+object Room {
+    private const val version = "2.2.0"
+    const val runtime = "androidx.room:room-runtime:$version"
+    const val compiler = "androidx.room:room-compiler:$version"
 }
 
 object Rx {
@@ -40,4 +47,12 @@ object Koin {
     const val scope = "org.koin:koin-androidx-scope:$version"
     const val viewmodel = "org.koin:koin-androidx-viewmodel:$version"
     const val testing = "org.koin:koin-test:$version"
+}
+
+object Api {
+    private object Versions {
+        const val gson = "2.8.5"
+    }
+
+    const val gson = "com.google.code.gson:gson:${Versions.gson}"
 }

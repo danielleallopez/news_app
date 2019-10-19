@@ -1,32 +1,41 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
+    kotlin("kapt")
 }
 
 android {
-    compileSdkVersion(AndroidSdk.compile)
     buildToolsVersion(Core.buildToolsVersion)
+
     defaultConfig {
-        applicationId = "com.dleal.mynews"
         minSdkVersion(AndroidSdk.min)
+        compileSdkVersion(AndroidSdk.compile)
         targetSdkVersion(AndroidSdk.target)
-        versionCode = 1
-        versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
             )
         }
+    }
+
+    kotlinOptions {
+        this as KotlinJvmOptions
+        jvmTarget = "1.8"
     }
 }
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":data"))
+
+    api(Api.gson)
+    implementation(Room.runtime)
+    kapt(Room.compiler)
 }
