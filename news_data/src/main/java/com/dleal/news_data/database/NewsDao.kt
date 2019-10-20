@@ -1,0 +1,45 @@
+package com.dleal.news_data.database
+
+import androidx.room.*
+import io.reactivex.Single
+
+/**
+ * Created by Daniel Leal on 2019-10-19.
+ */
+@Dao
+interface NewsDao {
+    //Articles
+    @Query("SELECT * FROM $TABLE_NAME_ARTICLES")
+    fun getAllArticles(): Single<List<ArticleData>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun saveArticle(article: ArticleData)
+
+    @Delete
+    fun deleteArticle(article: ArticleData)
+
+    @Query("DELETE FROM $TABLE_NAME_ARTICLES")
+    fun deleteAllArticles()
+
+    @Query("DELETE FROM $TABLE_NAME_ARTICLES WHERE id = :id")
+    fun deleteArticleById(id: Long)
+
+    //Videos
+    @Query("SELECT * FROM $TABLE_NAME_VIDEOS")
+    fun getAllVideos(): Single<List<VideoData>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun saveVideo(video: VideoData)
+
+    @Delete
+    fun deleteVideo(video: VideoData)
+
+    @Query("DELETE FROM $TABLE_NAME_VIDEOS")
+    fun deleteAllVideos()
+
+    @Query("DELETE FROM $TABLE_NAME_VIDEOS WHERE id = :id")
+    fun deleteVideoById(id: Long)
+}
+
+const val TABLE_NAME_ARTICLES = "Articles"
+const val TABLE_NAME_VIDEOS = "Videos"

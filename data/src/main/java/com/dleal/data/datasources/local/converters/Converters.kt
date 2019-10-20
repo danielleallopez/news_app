@@ -15,4 +15,14 @@ object AppConverters {
     @JvmStatic
     @TypeConverter
     fun dateToTimestamp(date: Date): Long = date.time
+
+    @JvmStatic
+    @TypeConverter
+    fun listToString(list: List<String>): String = list.joinToString(separator = SEPARATOR)
+
+    @JvmStatic
+    @TypeConverter
+    fun listFromString(listStr: String): List<String> = listStr.split(SEPARATOR)
 }
+
+private const val SEPARATOR = ","
