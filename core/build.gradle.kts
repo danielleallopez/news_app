@@ -40,6 +40,9 @@ dependencies {
     api(AndroidX.appCompat)
     api(AndroidX.core)
 
+    api(AndroidX.navigationFragment)
+    api(AndroidX.navigationUi)
+
     //Rx
     api(Rx.java)
     api(Rx.android)
