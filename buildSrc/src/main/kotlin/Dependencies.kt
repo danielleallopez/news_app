@@ -26,6 +26,8 @@ object Room {
     private const val version = "2.2.0"
     const val runtime = "androidx.room:room-runtime:$version"
     const val compiler = "androidx.room:room-compiler:$version"
+    const val kotlin = "androidx.room:room-ktx:$version"
+    const val rxjava = "androidx.room:room-rxjava2:$version"
 }
 
 object Rx {

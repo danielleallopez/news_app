@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -9,33 +7,32 @@ plugins {
 
 android {
     buildToolsVersion(Core.buildToolsVersion)
-
     defaultConfig {
         minSdkVersion(AndroidSdk.min)
         compileSdkVersion(AndroidSdk.compile)
         targetSdkVersion(AndroidSdk.target)
-    }
 
+        buildConfigField("int", "DATABASE_VERSION", "1")
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
-    }
-
-    kotlinOptions {
-        this as KotlinJvmOptions
-        jvmTarget = "1.8"
     }
 }
 
 dependencies {
     implementation(project(":core"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
 
-    api(Api.gson)
-    api(Room.runtime)
     kapt(Room.compiler)
+    implementation(Room.rxjava)
+    implementation(Room.kotlin)
 }

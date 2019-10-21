@@ -8,3 +8,7 @@ import org.koin.core.KoinComponent
 abstract class BaseRemoteDataSource : KoinComponent {
     //TODO: Here we would have a Retrofit instance, a method to create the API services and oen for processing responses
 }
+
+enum class NetworkCallState {
+    LOADING, FINISHED, ERROR
+}
