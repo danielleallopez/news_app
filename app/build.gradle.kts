@@ -34,4 +34,9 @@ dependencies {
     implementation(project(":news_view"))
 
     implementation(AndroidX.constraintLayout)
+
+    implementation("com.facebook.stetho:stetho:1.5.1")
+    implementation("com.facebook.stetho:stetho-urlconnection:1.5.1")
+
+
 }
