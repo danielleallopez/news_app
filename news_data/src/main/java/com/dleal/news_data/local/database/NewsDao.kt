@@ -1,7 +1,6 @@
-package com.dleal.news_data.database
+package com.dleal.news_data.local.database
 
 import androidx.room.*
-import io.reactivex.Single
 
 /**
  * Created by Daniel Leal on 2019-10-19.
@@ -10,10 +9,10 @@ import io.reactivex.Single
 interface NewsDao {
     //Articles
     @Query("SELECT * FROM $TABLE_NAME_ARTICLES")
-    fun getAllArticles(): Single<List<ArticleData>>
+    fun getAllArticles(): List<ArticleData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveArticle(article: ArticleData)
+    fun insertArticle(article: ArticleData)
 
     @Delete
     fun deleteArticle(article: ArticleData)
@@ -26,10 +25,10 @@ interface NewsDao {
 
     //Videos
     @Query("SELECT * FROM $TABLE_NAME_VIDEOS")
-    fun getAllVideos(): Single<List<VideoData>>
+    fun getAllVideos(): List<VideoData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveVideo(video: VideoData)
+    fun insertVideo(video: VideoData)
 
     @Delete
     fun deleteVideo(video: VideoData)

@@ -1,4 +1,4 @@
-package com.dleal.news_data.database
+package com.dleal.news_data.local.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
