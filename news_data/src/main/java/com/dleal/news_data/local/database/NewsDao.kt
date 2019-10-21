@@ -1,7 +1,6 @@
 package com.dleal.news_data.local.database
 
 import androidx.room.*
-import io.reactivex.Completable
 import io.reactivex.Single
 
 /**
@@ -14,32 +13,32 @@ interface NewsDao {
     fun getAllArticles(): Single<List<ArticleData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertArticle(article: ArticleData): Completable
+    fun insertArticle(article: ArticleData)
 
     @Delete
-    fun deleteArticle(article: ArticleData): Single<Int>
+    fun deleteArticle(article: ArticleData)
 
     @Query("DELETE FROM $TABLE_NAME_ARTICLES")
-    fun deleteAllArticles(): Single<Int>
+    fun deleteAllArticles()
 
     @Query("DELETE FROM $TABLE_NAME_ARTICLES WHERE id = :id")
-    fun deleteArticleById(id: Long): Single<Int>
+    fun deleteArticleById(id: Long)
 
     //Videos
     @Query("SELECT * FROM $TABLE_NAME_VIDEOS")
     fun getAllVideos(): Single<List<VideoData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertVideo(video: VideoData): Completable
+    fun insertVideo(video: VideoData)
 
     @Delete
-    fun deleteVideo(video: VideoData): Single<Int>
+    fun deleteVideo(video: VideoData)
 
     @Query("DELETE FROM $TABLE_NAME_VIDEOS")
-    fun deleteAllVideos(): Single<Int>
+    fun deleteAllVideos()
 
     @Query("DELETE FROM $TABLE_NAME_VIDEOS WHERE id = :id")
-    fun deleteVideoById(id: Long): Single<Int>
+    fun deleteVideoById(id: Long)
 }
 
 const val TABLE_NAME_ARTICLES = "Articles"

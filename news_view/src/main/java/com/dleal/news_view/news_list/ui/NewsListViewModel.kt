@@ -24,7 +24,7 @@ class NewsListViewModel(
 
         addDisposable(
             fetchNewsUseCase.getNews(0, 10)
-                .compose(rxTransformer.applyIoScheduler())
+                .compose(rxTransformer.applyIoSchedulerToFlow())
                 .subscribe(
                     { list: List<NewsElement> ->
                         newsElements.value = list

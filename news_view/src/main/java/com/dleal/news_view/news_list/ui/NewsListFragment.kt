@@ -28,8 +28,9 @@ class NewsListFragment : BaseFragment<NewsListViewModel>(), CLogger {
 
     private fun subscribeToListEvents() {
         viewModel.newsElementsEvents().observe(this, Observer { elementList ->
+            logError("List size = ${elementList.size}")
             elementList.forEach {
-                logDebug("Element id is ${it.id}, with url: ${it.url}")
+                logDebug("Element ${it.javaClass.simpleName} has id=${it.id}, with url: ${it.url} and headline ${it.headline}")
             }
         })
     }

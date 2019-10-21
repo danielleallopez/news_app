@@ -36,7 +36,7 @@ class NewsRemoteDataSource : BaseRemoteDataSource() {
 
     private fun createArticle(id: Int): ArticleDto =
         ArticleDto(
-            id = id.toLong(),
+            id = id + 1L,
             imageUrl = randomImageUrl(id),
             headline = randomHeadline(),
             description = randomDescription(),
@@ -47,7 +47,7 @@ class NewsRemoteDataSource : BaseRemoteDataSource() {
 
     private fun createVideo(id: Int): VideoDto =
         VideoDto(
-            id = id.toLong(),
+            id = id + 1L,
             imageUrl = randomImageUrl(id),
             headline = randomHeadline(),
             type = randomVideoType(),

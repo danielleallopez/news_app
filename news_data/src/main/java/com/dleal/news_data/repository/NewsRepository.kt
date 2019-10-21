@@ -4,7 +4,6 @@ import com.dleal.news_data.local.NewsLocalDataSource
 import com.dleal.news_data.local.database.NewsElementData
 import com.dleal.news_data.remote.NewsRemoteDataSource
 import io.reactivex.Flowable
-import io.reactivex.Single
 
 /**
  * Created by Daniel Leal on 2019-10-20.
@@ -14,18 +13,18 @@ class NewsRepository(
     private val remote: NewsRemoteDataSource
 ) {
 
-    fun fetchNewsElements(page: Int, pageSize: Int): Single<List<NewsElementData>> {
-//        if (page == INITIAL_PAGE) {
-//            local.deleteNewsElements()
-//        }
+    fun fetchNewsElements(page: Int, pageSize: Int): Flowable<List<NewsElementData>> {
+        if (page == INITIAL_PAGE) {
+            local.deleteNewsElements()
+        }
         return remote.fetchNewsElements(page, pageSize)
+            .toFlowable()
             .map {
                 val elementsDataList = it.map { dto -> dto.toData() }
                 local.insertNewsElements(elementsDataList)
                 elementsDataList
             }
-//            .toFlowable()
-//            .startWith { local.getAllNewsElements() }
+            .startWith(local.getAllNewsElements())
     }
 }
 
