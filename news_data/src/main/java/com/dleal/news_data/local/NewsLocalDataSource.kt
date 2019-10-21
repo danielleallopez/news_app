@@ -5,7 +5,10 @@ import com.dleal.news_data.local.database.ArticleData
 import com.dleal.news_data.local.database.NewsDatabase
 import com.dleal.news_data.local.database.NewsElementData
 import com.dleal.news_data.local.database.VideoData
-import io.reactivex.Single
+import io.reactivex.Completable
+import io.reactivex.Flowable
+import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by Daniel Leal on 2019-10-20.
@@ -14,7 +17,10 @@ class NewsLocalDataSource(private val newsDatabase: NewsDatabase) : BaseLocalDat
     private val newsDao by lazy { newsDatabase.getNewsDao() }
 
     fun deleteNewsElements() {
-        newsDao.deleteAllArticles()
+        Completable.fromAction { newsDao.deleteAllArticles() }
+            .concatWith { newsDao.deleteAllVideos() }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
     }
 
     fun insertNewsElements(newsElementList: List<NewsElementData>) {
@@ -26,9 +32,19 @@ class NewsLocalDataSource(private val newsDatabase: NewsDatabase) : BaseLocalDat
         }
     }
 
-    fun getAllNewsElements(): Single<List<NewsElementData>> {
-        val articles = newsDao.getAllArticles()
-        val videos = newsDao.getAllVideos()
-        return Single.just(articles.union(videos).shuffled())
+    fun getAllNewsElements(): Flowable<List<NewsElementData>> {
+        val fetchArticles = newsDao.getAllArticles().toFlowable().onErrorReturnItem(emptyList())
+        val fetchVideos = newsDao.getAllVideos().toFlowable().onErrorReturnItem(emptyList())
+        return Flowable.zip(
+            fetchArticles,
+            fetchVideos,
+            BiFunction { articles, videos ->
+                mutableListOf<NewsElementData>().run {
+                    addAll(articles)
+                    addAll(videos)
+                    sortBy { it.id }
+                    toList()
+                }
+            })
     }
 }

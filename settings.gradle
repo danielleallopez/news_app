@@ -1,2 +1,2 @@
-include ':app', ':core', ':data', ':domain', ':news_data'
+include ':app', ':core', ':data', ':domain', ':news_data', ':news_view'
 rootProject.name='MyNews'

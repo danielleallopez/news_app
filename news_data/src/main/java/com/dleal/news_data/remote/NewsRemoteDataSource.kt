@@ -2,6 +2,7 @@ package com.dleal.news_data.remote
 
 import com.dleal.data.datasources.remote.BaseRemoteDataSource
 import io.reactivex.Single
+import io.reactivex.SingleEmitter
 import java.net.URL
 import kotlin.math.roundToInt
 
@@ -11,19 +12,31 @@ import kotlin.math.roundToInt
 class NewsRemoteDataSource : BaseRemoteDataSource() {
 
     fun fetchNewsElements(page: Int, pageSize: Int): Single<List<NewsElementDto>> {
+        val firstIndex = page * pageSize
+        val lastIndex = firstIndex + pageSize
+        val pageIds = (firstIndex until lastIndex).shuffled()
         val randomNumberOfArticles = (0 until pageSize).shuffled().first()
-        val articleList = (0 until randomNumberOfArticles).map {
-            createArticle(it)
+
+        return Single.create { emitter: SingleEmitter<List<NewsElementDto>> ->
+            val articleList = pageIds.subList(0, randomNumberOfArticles).map {
+                createArticle(it)
+            }
+            val videoList = (pageIds.subList(randomNumberOfArticles, pageIds.size)).map {
+                createVideo(it)
+            }
+
+            val result: List<NewsElementDto> =
+                articleList.union(videoList).toList().sortedBy { it.id }
+
+            emitter.onSuccess(
+                result
+            )
         }
-        val videoList = (randomNumberOfArticles until pageSize).map {
-            createVideo(it)
-        }
-        return Single.just(articleList.union(videoList).shuffled())
     }
 
     private fun createArticle(id: Int): ArticleDto =
         ArticleDto(
-            id = id.toLong(),
+            id = id + 1L,
             imageUrl = randomImageUrl(id),
             headline = randomHeadline(),
             description = randomDescription(),
@@ -34,7 +47,7 @@ class NewsRemoteDataSource : BaseRemoteDataSource() {
 
     private fun createVideo(id: Int): VideoDto =
         VideoDto(
-            id = id.toLong(),
+            id = id + 1L,
             imageUrl = randomImageUrl(id),
             headline = randomHeadline(),
             type = randomVideoType(),
@@ -47,7 +60,7 @@ class NewsRemoteDataSource : BaseRemoteDataSource() {
 
     private fun randomHeadline(): String {
         val loremIpsum = URL(LOREM_IPSUM_URL.format(1, ParagraphLength.SHORT.code)).readText()
-        return loremIpsum.toCharArray().toList().shuffled().joinToString()
+        return loremIpsum.shuffleWords().joinToString()
     }
 
     private fun randomDescription(): String {
@@ -59,7 +72,7 @@ class NewsRemoteDataSource : BaseRemoteDataSource() {
                 ParagraphLength.values()[randomParagraphLengthIndex]
             )
         ).readText()
-        return loremIpsum.toCharArray().toList().shuffled().joinToString()
+        return loremIpsum.shuffleWords().joinToString()
     }
 
     private fun randomUrl(id: Int) = ARTICLE_URL.format(id)
@@ -109,3 +122,11 @@ private val TAGS = listOf(
 )
 
 private const val VIDEO_MAX_LENGTH = 3600
+
+private const val REGEX_WORD = """\w+"""
+
+private fun String.shuffleWords() =
+    REGEX_WORD.toRegex()
+        .findAll(this)
+        .map { it.value }
+        .toList()

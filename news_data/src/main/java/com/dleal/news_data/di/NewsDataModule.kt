@@ -2,10 +2,11 @@ package com.dleal.news_data.di
 
 import androidx.room.Room
 import com.dleal.core.BuildConfig
-import com.dleal.news_data.local.database.NewsDatabase
 import com.dleal.news_data.local.NewsLocalDataSource
+import com.dleal.news_data.local.database.NewsDatabase
 import com.dleal.news_data.remote.NewsRemoteDataSource
 import com.dleal.news_data.repository.NewsRepository
+import com.dleal.news_data.usecase.FetchNewsUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -34,5 +35,9 @@ val newsDataModule = module {
 
     single {
         NewsRepository(get(), get())
+    }
+
+    single {
+        FetchNewsUseCase(get())
     }
 }

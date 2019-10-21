@@ -15,11 +15,21 @@ object AndroidX {
     private object Versions {
         const val jetpack = "1.0.2"
         const val ktx = "1.0.2"
+        const val constraintLayout = "1.1.3"
+        const val navigation = "2.1.0"
+        const val supportLibVersion = "1.1.0-beta04"
     }
 
     const val appCompat = "androidx.appcompat:appcompat:${Versions.jetpack}"
     const val core = "androidx.core:core-ktx:${Versions.ktx}"
+    const val constraintLayout =
+        "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
 
+    const val recyclerView = "androidx.recyclerview:recyclerview:${Versions.supportLibVersion}"
+
+    const val navigationFragment =
+        "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
+    const val navigationUi = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
 }
 
 object Room {

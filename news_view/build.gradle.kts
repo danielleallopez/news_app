@@ -6,25 +6,16 @@ plugins {
 
 android {
     buildToolsVersion(Core.buildToolsVersion)
-
     defaultConfig {
         minSdkVersion(AndroidSdk.min)
         compileSdkVersion(AndroidSdk.compile)
         targetSdkVersion(AndroidSdk.target)
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
-        getByName("debug"){
-            buildConfigField("boolean", "DEBUG_ENABLED", "true")
-
-            isMinifyEnabled = false
-        }
-
         getByName("release") {
-            buildConfigField("boolean", "DEBUG_ENABLED", "false")
-
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -34,20 +25,11 @@ android {
 }
 
 dependencies {
-    api(Core.kotlin_stdlib)
+    implementation(project(":core"))
+    implementation(project(":news_data"))
+    implementation(project(":domain"))
 
-    //AndroidX
-    api(AndroidX.appCompat)
-    api(AndroidX.core)
+    implementation(AndroidX.constraintLayout)
 
-    api(AndroidX.navigationFragment)
-    api(AndroidX.navigationUi)
-
-    //Rx
-    api(Rx.java)
-    api(Rx.android)
-    api(Rx.kotlin)
-
-    //Koin
-    api(Koin.android)
+    implementation(Koin.viewmodel)
 }

@@ -17,15 +17,14 @@ class NewsRepository(
         if (page == INITIAL_PAGE) {
             local.deleteNewsElements()
         }
-        return local.getAllNewsElements()
-            .mergeWith {
-                remote.fetchNewsElements(page, pageSize)
-                    .map {
-                        val elementsDataList = it.map { dto -> dto.toData() }
-                        local.insertNewsElements(elementsDataList)
-                        elementsDataList
-                    }
+        return remote.fetchNewsElements(page, pageSize)
+            .toFlowable()
+            .map {
+                val elementsDataList = it.map { dto -> dto.toData() }
+                local.insertNewsElements(elementsDataList)
+                elementsDataList
             }
+            .startWith(local.getAllNewsElements())
     }
 }
 
