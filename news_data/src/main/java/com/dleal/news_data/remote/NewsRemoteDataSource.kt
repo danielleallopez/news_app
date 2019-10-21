@@ -4,7 +4,6 @@ import com.dleal.data.datasources.remote.BaseRemoteDataSource
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import java.net.URL
-import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 /**
@@ -26,7 +25,8 @@ class NewsRemoteDataSource : BaseRemoteDataSource() {
                 createVideo(it)
             }
 
-            val result: List<NewsElementDto> = articleList.union(videoList).toList().sortedBy { it.id }
+            val result: List<NewsElementDto> =
+                articleList.union(videoList).toList().sortedBy { it.id }
 
             emitter.onSuccess(
                 result
@@ -60,7 +60,7 @@ class NewsRemoteDataSource : BaseRemoteDataSource() {
 
     private fun randomHeadline(): String {
         val loremIpsum = URL(LOREM_IPSUM_URL.format(1, ParagraphLength.SHORT.code)).readText()
-        return loremIpsum.toCharArray().toList().shuffled().joinToString()
+        return loremIpsum.shuffleWords().joinToString()
     }
 
     private fun randomDescription(): String {
@@ -72,7 +72,7 @@ class NewsRemoteDataSource : BaseRemoteDataSource() {
                 ParagraphLength.values()[randomParagraphLengthIndex]
             )
         ).readText()
-        return loremIpsum.toCharArray().toList().shuffled().joinToString()
+        return loremIpsum.shuffleWords().joinToString()
     }
 
     private fun randomUrl(id: Int) = ARTICLE_URL.format(id)
@@ -123,4 +123,10 @@ private val TAGS = listOf(
 
 private const val VIDEO_MAX_LENGTH = 3600
 
-private const val MAX_DELAY = 5
+private const val REGEX_WORD = """\w+"""
+
+private fun String.shuffleWords() =
+    REGEX_WORD.toRegex()
+        .findAll(this)
+        .map { it.value }
+        .toList()
