@@ -2,7 +2,9 @@ package com.dleal.news_data.remote
 
 import com.dleal.data.datasources.remote.BaseRemoteDataSource
 import io.reactivex.Single
+import io.reactivex.SingleEmitter
 import java.net.URL
+import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 /**
@@ -11,14 +13,25 @@ import kotlin.math.roundToInt
 class NewsRemoteDataSource : BaseRemoteDataSource() {
 
     fun fetchNewsElements(page: Int, pageSize: Int): Single<List<NewsElementDto>> {
+        val firstIndex = page * pageSize
+        val lastIndex = firstIndex + pageSize
+        val pageIds = (firstIndex until lastIndex).shuffled()
         val randomNumberOfArticles = (0 until pageSize).shuffled().first()
-        val articleList = (0 until randomNumberOfArticles).map {
-            createArticle(it)
+
+        return Single.create { emitter: SingleEmitter<List<NewsElementDto>> ->
+            val articleList = pageIds.subList(0, randomNumberOfArticles).map {
+                createArticle(it)
+            }
+            val videoList = (pageIds.subList(randomNumberOfArticles, pageIds.size)).map {
+                createVideo(it)
+            }
+
+            val result: List<NewsElementDto> = articleList.union(videoList).toList().sortedBy { it.id }
+
+            emitter.onSuccess(
+                result
+            )
         }
-        val videoList = (randomNumberOfArticles until pageSize).map {
-            createVideo(it)
-        }
-        return Single.just(articleList.union(videoList).shuffled())
     }
 
     private fun createArticle(id: Int): ArticleDto =
@@ -109,3 +122,5 @@ private val TAGS = listOf(
 )
 
 private const val VIDEO_MAX_LENGTH = 3600
+
+private const val MAX_DELAY = 5

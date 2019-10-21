@@ -2,7 +2,6 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
-    kotlin("kapt")
 }
 
 android {
@@ -11,8 +10,6 @@ android {
         minSdkVersion(AndroidSdk.min)
         compileSdkVersion(AndroidSdk.compile)
         targetSdkVersion(AndroidSdk.target)
-
-        buildConfigField("int", "DATABASE_VERSION", "1")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -29,10 +26,10 @@ android {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":data"))
+    implementation(project(":news_data"))
     implementation(project(":domain"))
 
-    kapt(Room.compiler)
-    implementation(Room.rxjava)
-    implementation(Room.kotlin)
+    implementation(AndroidX.constraintLayout)
+
+    implementation(Koin.viewmodel)
 }

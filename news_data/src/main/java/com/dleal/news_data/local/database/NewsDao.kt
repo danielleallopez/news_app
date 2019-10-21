@@ -1,6 +1,8 @@
 package com.dleal.news_data.local.database
 
 import androidx.room.*
+import io.reactivex.Completable
+import io.reactivex.Single
 
 /**
  * Created by Daniel Leal on 2019-10-19.
@@ -9,35 +11,35 @@ import androidx.room.*
 interface NewsDao {
     //Articles
     @Query("SELECT * FROM $TABLE_NAME_ARTICLES")
-    fun getAllArticles(): List<ArticleData>
+    fun getAllArticles(): Single<List<ArticleData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertArticle(article: ArticleData)
+    fun insertArticle(article: ArticleData): Completable
 
     @Delete
-    fun deleteArticle(article: ArticleData)
+    fun deleteArticle(article: ArticleData): Single<Int>
 
     @Query("DELETE FROM $TABLE_NAME_ARTICLES")
-    fun deleteAllArticles()
+    fun deleteAllArticles(): Single<Int>
 
     @Query("DELETE FROM $TABLE_NAME_ARTICLES WHERE id = :id")
-    fun deleteArticleById(id: Long)
+    fun deleteArticleById(id: Long): Single<Int>
 
     //Videos
     @Query("SELECT * FROM $TABLE_NAME_VIDEOS")
-    fun getAllVideos(): List<VideoData>
+    fun getAllVideos(): Single<List<VideoData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertVideo(video: VideoData)
+    fun insertVideo(video: VideoData): Completable
 
     @Delete
-    fun deleteVideo(video: VideoData)
+    fun deleteVideo(video: VideoData): Single<Int>
 
     @Query("DELETE FROM $TABLE_NAME_VIDEOS")
-    fun deleteAllVideos()
+    fun deleteAllVideos(): Single<Int>
 
     @Query("DELETE FROM $TABLE_NAME_VIDEOS WHERE id = :id")
-    fun deleteVideoById(id: Long)
+    fun deleteVideoById(id: Long): Single<Int>
 }
 
 const val TABLE_NAME_ARTICLES = "Articles"

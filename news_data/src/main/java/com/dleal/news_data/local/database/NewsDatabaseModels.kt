@@ -9,27 +9,30 @@ import com.google.gson.annotations.SerializedName
  */
 abstract class NewsElementData(
     @PrimaryKey @SerializedName("id") val id: Long,
+    @SerializedName("imageUrl") val imageUrl: String,
+    @SerializedName("headline") val headline: String,
+    @SerializedName("url") val url: String,
     @SerializedName("isPremium") val isPremium: Boolean
 )
 
 @Entity(tableName = TABLE_NAME_ARTICLES)
 class ArticleData(
     id: Long,
-    @SerializedName("imageUrl") val imageUrl: String,
-    @SerializedName("headline") val headline: String,
+    imageUrl: String,
+    headline: String,
     @SerializedName("description") val description: String,
-    @SerializedName("url") val url: String,
+    url: String,
     @SerializedName("tags") val tags: List<String>,
     isPremium: Boolean
-) : NewsElementData(id, isPremium)
+) : NewsElementData(id, imageUrl, headline, url, isPremium)
 
 @Entity(tableName = TABLE_NAME_VIDEOS)
 class VideoData(
     id: Long,
-    @SerializedName("imageUrl") val imageUrl: String,
-    @SerializedName("headline") val headline: String,
+    imageUrl: String,
+    headline: String,
     @SerializedName("type") val type: String,
     @SerializedName("duration") val duration: Int,
-    @SerializedName("url") val url: String,
+    url: String,
     isPremium: Boolean
-) : NewsElementData(id, isPremium)
+) : NewsElementData(id, imageUrl, headline, url, isPremium)

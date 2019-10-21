@@ -6,6 +6,7 @@ import com.dleal.news_data.local.database.NewsDatabase
 import com.dleal.news_data.local.database.NewsElementData
 import com.dleal.news_data.local.database.VideoData
 import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 
 /**
  * Created by Daniel Leal on 2019-10-20.
@@ -26,9 +27,16 @@ class NewsLocalDataSource(private val newsDatabase: NewsDatabase) : BaseLocalDat
         }
     }
 
-    fun getAllNewsElements(): Single<List<NewsElementData>> {
-        val articles = newsDao.getAllArticles()
-        val videos = newsDao.getAllVideos()
-        return Single.just(articles.union(videos).shuffled())
-    }
+    fun getAllNewsElements(): Single<List<NewsElementData>> =
+        Single.zip(
+            newsDao.getAllArticles(),
+            newsDao.getAllVideos(),
+            BiFunction { articles, videos ->
+                mutableListOf<NewsElementData>().run {
+                    addAll(articles)
+                    addAll(videos)
+                    sortBy { it.id }
+                    toList()
+                }
+            })
 }

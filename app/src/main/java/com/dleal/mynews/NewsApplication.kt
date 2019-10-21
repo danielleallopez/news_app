@@ -4,6 +4,7 @@ import android.app.Application
 import com.dleal.core.di.coreModule
 import com.dleal.data.di.dataModule
 import com.dleal.news_data.di.newsDataModule
+import com.dleal.news_view.news_list.di.newsViewModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -34,5 +35,6 @@ class NewsApplication : Application() {
 val appModules = listOf(
     coreModule,
     dataModule,
-    newsDataModule
+    newsDataModule,
+    newsViewModule
 )
