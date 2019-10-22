@@ -32,4 +32,8 @@ dependencies {
     implementation(AndroidX.constraintLayout)
 
     implementation(Koin.viewmodel)
+
+    implementation(ImageLibs.glide) {
+        exclude("com.android.support")
+    }
 }

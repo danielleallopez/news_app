@@ -68,3 +68,8 @@ object Api {
 
     const val gson = "com.google.code.gson:gson:${Versions.gson}"
 }
+
+object ImageLibs {
+    private const val version = "4.9.0"
+    const val glide = "com.github.bumptech.glide:glide:${version}"
+}
