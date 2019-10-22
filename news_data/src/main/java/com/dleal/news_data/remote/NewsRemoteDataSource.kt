@@ -56,7 +56,7 @@ class NewsRemoteDataSource : BaseRemoteDataSource() {
             isPremium = randomBoolean()
         )
 
-    private fun randomImageUrl(id: Long) = IMAGE_URL.format(id)
+    private fun randomImageUrl(id: Long) = IMAGE_URL.format((Math.random() * 1000 + id).toInt())
 
     private fun randomHeadline(): String {
         val loremIpsum = URL(LOREM_IPSUM_URL.format(1, ParagraphLength.SHORT.code)).readText()
@@ -97,7 +97,7 @@ private enum class ParagraphLength(val code: String) {
     LONG("long")
 }
 
-private const val IMAGE_URL = "https://picsum.photos/720/480?random=%d"
+private const val IMAGE_URL = "https://picsum.photos/id/%d/720/480"
 private const val ARTICLE_URL = "https://myarticles/%d"
 
 private val TAGS = listOf(

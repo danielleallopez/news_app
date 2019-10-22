@@ -49,7 +49,7 @@ class ArticleViewHolder(override val containerView: View) : RecyclerView.ViewHol
     }
 
     private fun processHeadline(article: Article) {
-        txtArticleHeadline.text = article.headline
+        txtArticleHeadline.text = article.headline.capitalize()
     }
 
     private fun processDescription(article: Article) {
