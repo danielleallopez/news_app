@@ -20,10 +20,12 @@ class NewsListViewModel(
     fun newsElementsEvents(): LiveData<List<NewsElement>> = newsElements
 
     fun start() {
-        logDebug("START")
+        fetchPage(INITIAL_PAGE, PAGE_SIZE)
+    }
 
+    private fun fetchPage(page: Int, pageSize: Int) {
         addDisposable(
-            fetchNewsUseCase.getNews(0, 10)
+            fetchNewsUseCase.getNews(page, pageSize)
                 .compose(rxTransformer.applyIoSchedulerToFlow())
                 .subscribe(
                     { list: List<NewsElement> ->
@@ -35,7 +37,12 @@ class NewsListViewModel(
                     }
                 )
         )
+    }
 
-        logDebug("FINISH")
+    fun onRefresh() {
+        fetchPage(INITIAL_PAGE, PAGE_SIZE)
     }
 }
+
+private const val INITIAL_PAGE = 0
+private const val PAGE_SIZE = 10

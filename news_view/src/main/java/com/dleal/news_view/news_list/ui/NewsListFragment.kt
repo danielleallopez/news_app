@@ -37,12 +37,8 @@ class NewsListFragment : BaseFragment<NewsListViewModel>(), CLogger {
         viewModel.newsElementsEvents().observe(this, Observer { elementList ->
 
             refresh_news_elements.show()
+            refresh_news_elements.isRefreshing = false
             (rv_news_elements.adapter as NewsElementAdapter).updateList(elementList)
-
-            logError("List size = ${elementList.size}")
-            elementList.forEach {
-                logDebug("Element ${it.javaClass.simpleName} has id=${it.id}, with url: ${it.url} and headline ${it.headline}")
-            }
         })
     }
 
@@ -64,7 +60,7 @@ class NewsListFragment : BaseFragment<NewsListViewModel>(), CLogger {
         }
 
         refresh_news_elements.setOnRefreshListener {
-            //TODO: viewModel.onPullToRefresh()
+            viewModel.onRefresh()
         }
     }
 }
