@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:backgroundTint="@color/medium_grey"
     app:cardCornerRadius="8dp"
-    app:contentPadding="8dp"
+    app:contentPadding="6dp"
     tools:showIn="@layout/item_video_element">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,17 +24,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            style="@style/TextAppearance.AppCompat.Large"
+            style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:text="@string/premium_header"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toEndOf="@+id/img_euro_symbol"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Premium" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

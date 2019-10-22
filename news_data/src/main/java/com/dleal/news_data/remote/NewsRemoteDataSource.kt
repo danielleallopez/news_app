@@ -19,10 +19,10 @@ class NewsRemoteDataSource : BaseRemoteDataSource() {
 
         return Single.create { emitter: SingleEmitter<List<NewsElementDto>> ->
             val articleList = pageIds.subList(0, randomNumberOfArticles).map {
-                createArticle(it)
+                createArticle(it + 1L)
             }
             val videoList = (pageIds.subList(randomNumberOfArticles, pageIds.size)).map {
-                createVideo(it)
+                createVideo(it + 1L)
             }
 
             val result: List<NewsElementDto> =
@@ -34,9 +34,9 @@ class NewsRemoteDataSource : BaseRemoteDataSource() {
         }
     }
 
-    private fun createArticle(id: Int): ArticleDto =
+    private fun createArticle(id: Long): ArticleDto =
         ArticleDto(
-            id = id + 1L,
+            id = id,
             imageUrl = randomImageUrl(id),
             headline = randomHeadline(),
             description = randomDescription(),
@@ -45,9 +45,9 @@ class NewsRemoteDataSource : BaseRemoteDataSource() {
             isPremium = randomBoolean()
         )
 
-    private fun createVideo(id: Int): VideoDto =
+    private fun createVideo(id: Long): VideoDto =
         VideoDto(
-            id = id + 1L,
+            id = id,
             imageUrl = randomImageUrl(id),
             headline = randomHeadline(),
             type = randomVideoType(),
@@ -56,7 +56,7 @@ class NewsRemoteDataSource : BaseRemoteDataSource() {
             isPremium = randomBoolean()
         )
 
-    private fun randomImageUrl(id: Int) = IMAGE_URL.format(id)
+    private fun randomImageUrl(id: Long) = IMAGE_URL.format(id)
 
     private fun randomHeadline(): String {
         val loremIpsum = URL(LOREM_IPSUM_URL.format(1, ParagraphLength.SHORT.code)).readText()
@@ -75,7 +75,7 @@ class NewsRemoteDataSource : BaseRemoteDataSource() {
         return loremIpsum.shuffleWords().joinToString()
     }
 
-    private fun randomUrl(id: Int) = ARTICLE_URL.format(id)
+    private fun randomUrl(id: Long) = ARTICLE_URL.format(id)
 
     private fun randomTags(): List<String> {
         val randomTagsLength = (0..2).shuffled().first()
@@ -97,7 +97,7 @@ private enum class ParagraphLength(val code: String) {
     LONG("long")
 }
 
-private const val IMAGE_URL = "https://picsum.photos/id/%d/480/720"
+private const val IMAGE_URL = "https://picsum.photos/720/480?random=%d"
 private const val ARTICLE_URL = "https://myarticles/%d"
 
 private val TAGS = listOf(
@@ -130,3 +130,4 @@ private fun String.shuffleWords() =
         .findAll(this)
         .map { it.value }
         .toList()
+        .shuffled()
